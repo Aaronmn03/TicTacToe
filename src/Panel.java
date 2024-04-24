@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.List;
+
+import utils.Pair;
+
 public class Panel {
     private Box panel[][];
 
@@ -36,6 +41,11 @@ public class Panel {
         return aux;
     }
 
+    /*
+     * @ returns null si no gana nadie y si gana alguien devuelve el valor del ganador, que sera el que ha posicionado
+     * 
+     * 
+     */
     public PlayerSelection positionSelected(int x, int y,PlayerSelection playerSelection){
         if(!panel[x][y].isEmpty()){
             throw new RuntimeException("La posicion seleccionada ya esta escogida");
@@ -43,8 +53,63 @@ public class Panel {
             panel[x][y].setValue(playerSelection);
             
         }
-        return playerSelection;
+        if(checkWinner(x,y,playerSelection)){
+            return playerSelection;
+        }else{
+            return null;
+        }
+        
     }
+
+    public PlayerSelection determineWinner(int x, int y, PlayerSelection player){
+        if (checkRow(y,player) || checkColumn(x,player) || checkDiagonal1(player) || checkDiagonal2(player)){
+            return player;
+        }
+        return null;
+    }
+
+
+
+    private boolean checkRow(int y, PlayerSelection player){
+        for(int i = 0; i < 3; i++){
+            if(panel[i][y].getValue() != player){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkColumn(int x, PlayerSelection player){
+        for(int i = 0; i < 3; i++){
+            if(panel[x][i].getValue() != player){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkDiagonal1(PlayerSelection player){
+        for(int i = 0; i < 3 ; i ++){
+            if(panel[i][i].getValue() != player){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkDiagonal2(PlayerSelection player){
+        for (int i = 0; i < 3; i++) {
+            if (panel[i][2 - i].getValue() != player) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkWinner(int x, int y,PlayerSelection player){
+        return determineWinner(x,y,player)!=null;
+    }
+
 
     /*
      * @return true if the position requires a border
@@ -77,4 +142,6 @@ public class Panel {
     private boolean isMultiple4(int v){
         return v % 4 == 0;
     }
+
+
 }

@@ -5,10 +5,12 @@ import utils.Pair;
 public class Match {
     private PlayerSelection turn;
     private Panel panel;
+    private PlayerSelection winner;
 
     public Match(){
         panel = new Panel();
         turn = PlayerSelection.Player1;
+        winner = null;
     }
 
     public void changeTurn(){
@@ -21,16 +23,32 @@ public class Match {
 
     public void play(){
         Scanner scanner = new Scanner(System.in);
-        for(int i = 0; i<9 ; i++){
-            System.out.println("Juega el " + turnToString());
-            System.out.println(panel.toString());
-            System.out.println("introduzca un valor (1-9): ");
-            /*Falta comprobar que lo que hemos pulsado es un numero entre 1-9 */
-            Pair selected = numberSelected(scanner.nextInt());
-            panel.positionSelected(selected.getX(), selected.getY(), turn);
-            changeTurn();
+
+        for(int i = 0; i<9 && winner == null; i++){
+            Pair selected = suggestForPosition(scanner);
+            winner = panel.positionSelected(selected.getX(), selected.getY(), turn);
+            if(winner != null){
+                System.out.println("El ganador es: " + turnToString());
+            }else{
+                changeTurn();
+            }
+        }
+        System.out.println(panel.toString());
+        if(winner == null){
+            System.out.println("Empate");
         }
         scanner.close();
+    }
+
+    private Pair suggestForPosition(Scanner scanner){
+        int num = 10;
+        while(num < 1 || num > 9){
+            System.out.println("Juega el " + turnToString());
+            System.out.println(panel.toString());
+            System.out.println("Introduzca un valor (1-9): ");
+            num = scanner.nextInt();
+        }
+        return numberSelected(num);
     }
 
     private String turnToString(){
