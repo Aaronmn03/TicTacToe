@@ -23,4 +23,8 @@ public class Pair {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String toString(){
+        return "X:" + x + "Y:" + y;
+    }
 }

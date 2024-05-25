@@ -1,28 +1,40 @@
-public class Box {
-    private PlayerSelection value;
+package Game;
 
-    public Box(PlayerSelection value) {
+import utils.Turn.TypePlayer;
+
+public class Box {
+    private TypePlayer value;
+
+    public Box(TypePlayer value) {
         this.value = value;
     }
 
     public Box (){
-        value = PlayerSelection.Empty;
+        value = TypePlayer.Empty;
     }
 
-    public PlayerSelection getValue() {
+    public TypePlayer getValue() {
         return value;
     }
 
-    public void setValue(PlayerSelection value) {
+    public void setValue(TypePlayer value) {
         this.value = value;
     }
     
     public boolean isEmpty(){
-        return value.equals(PlayerSelection.Empty);
+        return value.equals(TypePlayer.Empty);
     }
 
-    public boolean isSelectedBy(PlayerSelection p){
+    public boolean isSelectedBy(TypePlayer p){
         return value.equals(p);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Box box = (Box) obj;
+        return value == box.value;
     }
 
     public String toString(){
